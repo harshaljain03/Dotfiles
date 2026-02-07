@@ -1,5 +1,6 @@
 alias home='cd ~'
 alias c='clear && fastfetch'
+alias clear='clear && fastfetch'
 alias sync_bashrc='sudo cp /home/phoenix/.bashrc /root/.bashrc'
 alias sync_aliases='sudo cp /home/phoenix/.bash_aliases /root/.bash_aliases'
 alias sync_inputrc='sudo cp /home/phoenix/.inputrc /root/.inputrc'
