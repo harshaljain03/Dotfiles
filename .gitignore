@@ -1,2 +1,5 @@
-*/.config/BraveSoftware/
+*/.config/BraveSoftware
+*/.config/BraveSoftware/*
+
 */.config/go
+*/.config/go/*
