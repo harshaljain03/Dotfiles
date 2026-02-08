@@ -1,0 +1,102 @@
+- bash-completion
+- fastfetch
+- curl
+- wget
+- gpg
+- gpg-agent
+- gnugp     # Optional
+- openssh
+- ca-certificates
+- lsb-release
+- tree
+- htop
+- net-tools
+- zip
+- unzip
+- tar
+- gzip
+- git
+  - `git config --global user.name "Harshal Jain"`
+  - `git config --global user.email <realharshaljain@gmail.com>`
+  - `git config --global init.defaultBranch main`
+  - `git clone <https://github.com/harshaljain03/harshaljain03.github.io.git> ~/Projects/Personal\ Website/`
+  - `git clone <https://github.com/harshaljain03/VibeScan.git> ~/Projects/VibeScan/`
+  - `git clone <https://github.com/harshaljain03/Dotfiles.git> ~/Dotfiles/`
+- openssh-client
+- openvpn
+- vim
+- nano
+- man-db
+- manpages
+- info
+- python3
+- python3-pip
+- python3-venv
+- command-not-found
+- stow
+- fontconfig
+- Nerd Font(s)
+  - wget -P [Location] [Download URL]
+  - Location:
+    - `~/.local/share/fonts/` -> for user fonts
+    - `/usr/local/share/fonts/` -> for system wide fonts *# requires sudo*
+  - URL for FiraCode: <https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip>
+  - cd [Location]
+  - unzip [fonts].zip -d [fonts]/
+  - rm [fonts].zip
+  - `fc-cache -fv`                # requires `fontconfig`
+  - `fc-list | head`              # to verify the install
+- starship
+  - Pre-requisite: Nerd Font
+  - For Debian/Debian-based systems: `sudo apt install starship`
+  - add the following to the end of `~/.bashrc` file:
+  ```bash
+  eval "$(starship init bash)"
+  ```
+  or use this:
+  ```bash
+  echo 'eval "$(starship init bash)"' >> ~/.bashrc
+  ```
+  - `cd ~/Dotfiles`
+  - `stow Starship`
+- tealdeer
+  - `tldr --update`
+  - `tldr --seed-config`
+  - change `auto_update = true` from the config
+- caffeine
+  - add caffeine-indicator to startup
+  - to find the binary of caffeine-indicater use `which caffeine-indicator
+- hugo
+  - cd /tmp
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.155.2/hugo[latest]linux-amd64.deb
+    - .deb is only for debian-based systems download .tar file for complete binary; find the latest file in https://github.com/gohugoio/hugo/releases/
+  - sudo apt install ./hugo[tab]
+  - rm ./hugo[tab]
+- go (Go Programming Language)
+  - FOLLOW: https://go.dev/doc/install
+- hostname
+- iptables
+- openssl
+- amass
+  - FOLLOW: https://owasp-amass.github.io/docs/#overview
+- ZAP
+  - FOLLOW: https://www.zaproxy.org/download/
+- dnsenum
+- dnsrecon
+- nmap
+- burpsuite
+- ffuf
+- gobuster
+- sqlmap
+- aircrack-ng
+- airgeddon
+- hashcat
+- john aka john the ripper
+- hydra
+- hashidentifier
+- metasploit framework
+- evil-winrm
+- impacker-scripts
+- beff-xss
+- autopsy
+- shortscan
