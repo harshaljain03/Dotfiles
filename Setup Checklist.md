@@ -74,6 +74,12 @@
   - rm ./hugo[tab]
 - go (Go Programming Language)
   - FOLLOW: https://go.dev/doc/install
+  - add this to the profile file:
+  ```bash
+  if [ -d "/usr/local/go/bin" ] ; then
+      PATH="$PATH:/usr/local/go/bin"
+  fi
+  ```
 - hostname
 - iptables
 - openssl
@@ -92,11 +98,18 @@
 - airgeddon
 - hashcat
 - john aka john the ripper
+  - zip2john
 - hydra
 - hashidentifier
+- postgresql
 - metasploit framework
 - evil-winrm
 - impacker-scripts
 - beff-xss
 - autopsy
 - shortscan
+- peass aka LinPeas
+- Seclist
+- linux-exploit-suggester
+- rockyou
+- sublist3r
