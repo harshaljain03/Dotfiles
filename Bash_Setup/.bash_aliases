@@ -17,3 +17,8 @@ alias install='sudo apt install'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+
+# To execure regular windows commands without mentioning .exe
+
+alias winget='winget.exe'
+alias wsl='wsl.exe'
