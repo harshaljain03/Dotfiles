@@ -3,3 +3,6 @@
 
 */.config/go
 */.config/go/*
+
+*/.config/mozilla
+*/.config/mozilla/*

@@ -3,8 +3,7 @@ alias ll='ls -l --color=auto'
 alias la='ls -la --color=auto'
 alias l='ls -CF --color=auto'
 
-alias c='clear && fastfetch'
-alias clear='clear && fastfetch'
+alias c='clear'
 
 alias h='history'
 alias hg='history | grep'
