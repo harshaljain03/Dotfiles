@@ -17,6 +17,7 @@ alias upgrade='sudo apt update && sudo apt full-upgrade -y'
 alias explorer='explorer.exe .'
 alias winhome='cd /mnt/c/Users/Phoenix/'
 alias winget='winget.exe'
+alias ff='fastfetch'
 
 alias nessus_start='sudo systemctl start nessusd.service'
 alias nessus_stop='sudo systemctl stop nessusd.service'
