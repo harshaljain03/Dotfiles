@@ -1,0 +1,28 @@
+alias history="history 0"		# force zsh to show the complete history
+alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias diff='diff --color=auto'
+alias ip='ip --color=auto'
+
+alias home='cd ~'
+alias c='clear'
+alias hg='history | grep -i'
+alias root='sudo su -'
+alias update='sudo apt update'
+alias upgrade='sudo apt update && sudo apt full-upgrade -y'
+alias explorer='explorer.exe .'
+alias winhome='cd /mnt/c/Users/Phoenix/'
+alias winget='winget.exe'
+
+alias nessus_start='sudo systemctl start nessusd.service'
+alias nessus_stop='sudo systemctl stop nessusd.service'
+
+alias ll='ls -l'
+alias la='ls -la'
+alias l='ls -CF'
+
+alias vps='ssh harshal@159.223.140.130'
