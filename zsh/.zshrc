@@ -13,6 +13,10 @@ setopt notify              # report the status of background jobs immediately
 setopt numericglobsort     # sort filenames numerically when it makes sense
 setopt promptsubst         # enable command substitution in prompt
 
+WORDCHARS='_-' # Don't consider certain characters part of the word
+
+PROMPT_EOL_MARK=""  # hide EOL sign ('%')
+
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 bindkey ' ' magic-space                           # do history expansion on space
@@ -31,6 +35,11 @@ bindkey '^[[Z' undo                               # shift + tab undo last action
 HISTSIZE=10000
 SAVEHIST=50000
 HISTFILE=~/.zsh_history
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
 
 # Use modern completion system
 autoload -Uz compinit
@@ -40,12 +49,13 @@ zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
+zstyle ':completion:*:*:*:*:*' menu select=2
 eval "$(dircolors -b)"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' rehash true
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' use-compctl false
@@ -81,6 +91,99 @@ if [ -n "$force_color_prompt" ]; then
     else
         color_prompt=
     fi
+fi
+
+configure_prompt() {
+    prompt_symbol=@
+    # Skull emoji for root terminal
+    [ "$EUID" -eq 0 ] && prompt_symbol=💀
+    case "$PROMPT_ALTERNATIVE" in
+        oneline)
+            PROMPT=$'${debian_chroot:+($debian_chroot)}${VIRTUAL_ENV:+($(basename $VIRTUAL_ENV))}%B%F{%(#.red.blue)}%n'$prompt_symbol$'%m%b%F{reset}:%B%F{%(#.blue.green)}%~%b%F{reset}%(#.#.$) '
+            RPROMPT=
+            ;;
+    esac
+    unset prompt_symbol
+}
+
+PROMPT_ALTERNATIVE=oneline
+NEWLINE_BEFORE_PROMPT=yes
+
+if [ "$color_prompt" = yes ]; then
+    # override default virtualenv indicator in prompt
+    VIRTUAL_ENV_DISABLE_PROMPT=1
+
+    configure_prompt
+
+    # enable syntax-highlighting
+    if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+        . /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        ZSH_HIGHLIGHT_STYLES[default]=none
+        ZSH_HIGHLIGHT_STYLES[unknown-token]=underline
+        ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=cyan,bold
+        ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=green,underline
+        ZSH_HIGHLIGHT_STYLES[global-alias]=fg=green,bold
+        ZSH_HIGHLIGHT_STYLES[precommand]=fg=green,underline
+        ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=blue,bold
+        ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=green,underline
+        ZSH_HIGHLIGHT_STYLES[path]=bold
+        ZSH_HIGHLIGHT_STYLES[path_pathseparator]=
+        ZSH_HIGHLIGHT_STYLES[path_prefix_pathseparator]=
+        ZSH_HIGHLIGHT_STYLES[globbing]=fg=blue,bold
+        ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=blue,bold
+        ZSH_HIGHLIGHT_STYLES[command-substitution]=none
+        ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter]=fg=magenta,bold
+        ZSH_HIGHLIGHT_STYLES[process-substitution]=none
+        ZSH_HIGHLIGHT_STYLES[process-substitution-delimiter]=fg=magenta,bold
+        ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=fg=green
+        ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=fg=green
+        ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
+        ZSH_HIGHLIGHT_STYLES[back-quoted-argument-delimiter]=fg=blue,bold
+        ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=yellow
+        ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=yellow
+        ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]=fg=yellow
+        ZSH_HIGHLIGHT_STYLES[rc-quote]=fg=magenta
+        ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=magenta,bold
+        ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=magenta,bold
+        ZSH_HIGHLIGHT_STYLES[back-dollar-quoted-argument]=fg=magenta,bold
+        ZSH_HIGHLIGHT_STYLES[assign]=none
+        ZSH_HIGHLIGHT_STYLES[redirection]=fg=blue,bold
+        ZSH_HIGHLIGHT_STYLES[comment]=fg=black,bold
+        ZSH_HIGHLIGHT_STYLES[named-fd]=none
+        ZSH_HIGHLIGHT_STYLES[numeric-fd]=none
+        ZSH_HIGHLIGHT_STYLES[arg0]=fg=cyan
+        ZSH_HIGHLIGHT_STYLES[bracket-error]=fg=red,bold
+        ZSH_HIGHLIGHT_STYLES[bracket-level-1]=fg=blue,bold
+        ZSH_HIGHLIGHT_STYLES[bracket-level-2]=fg=green,bold
+        ZSH_HIGHLIGHT_STYLES[bracket-level-3]=fg=magenta,bold
+        ZSH_HIGHLIGHT_STYLES[bracket-level-4]=fg=yellow,bold
+        ZSH_HIGHLIGHT_STYLES[bracket-level-5]=fg=cyan,bold
+        ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]=standout
+    fi
+else
+    PROMPT='${debian_chroot:+($debian_chroot)}%n@%m:%~%(#.#.$) '
+fi
+unset color_prompt force_color_prompt
+
+
+# enable color support of ls, less and man, and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    export LS_COLORS="$LS_COLORS:ow=30;44:" # fix ls color for folders with 777 permissions
+
+    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+    export MANROFFOPT="-c"
+
+    # Take advantage of $LS_COLORS for completion as well
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+    zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 fi
 
 # enable auto-suggestions based on the history
